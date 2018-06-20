@@ -16,7 +16,7 @@ type options struct {
 	OutputModel string `short:"o" long:"output"`
 }
 
-func readFile(fpath string, stream *anomlog.Stream) error {
+func readFile(fpath string, engine *anomlog.Engine) error {
 	fp, err := os.Open(fpath)
 	if err != nil {
 		log.Fatal("Fail to open file: ", fpath, " ", err)
@@ -28,7 +28,7 @@ func readFile(fpath string, stream *anomlog.Stream) error {
 	for s.Scan() {
 		text := s.Text()
 		if len(text) > 0 {
-			stream.Read(text)
+			engine.Read(text)
 		}
 	}
 
@@ -43,23 +43,23 @@ func main() {
 		os.Exit(1)
 	}
 
-	stream := anomlog.NewStream()
+	engine := anomlog.NewEngine()
 
 	if opts.InputModel != "" {
-		stream.Load(opts.InputModel)
+		engine.Load(opts.InputModel)
 	}
 
 	for _, fpath := range args[1:] {
 		log.Println("Reading file... ", fpath)
-		readFile(fpath, &stream)
+		readFile(fpath, &engine)
 	}
 
 	log.Println("Done")
-	for idx, format := range stream.Formats() {
+	for idx, format := range engine.Formats() {
 		fmt.Printf("[%2d] %s\n", idx, format.String())
 	}
 
 	if opts.OutputModel != "" {
-		stream.Save(opts.OutputModel)
+		engine.Save(opts.OutputModel)
 	}
 }

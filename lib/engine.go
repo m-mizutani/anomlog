@@ -8,34 +8,34 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Stream is a main module of logseer, should be used mainly as interface
-type Stream struct {
+// Engine is a main module of logseer, should be used mainly as interface
+type Engine struct {
 	splitter Splitter
 	model    Model
 }
 
-// NewStream is a constructor
-func NewStream() Stream {
-	s := Stream{}
+// NewEngine is a constructor
+func NewEngine() Engine {
+	s := Engine{}
 	s.splitter = NewSimpleSplitter()
 	s.model = &SimpleModel{}
 	return s
 }
 
 // Read method import log data to a model
-func (x *Stream) Read(text string) *Format {
+func (x *Engine) Read(text string) *Format {
 	log := newLog(text, x.splitter)
 	fmt := x.model.read(log)
 	return fmt
 }
 
 // Count returns number of logs which are already analyzed
-func (x *Stream) Count() int {
+func (x *Engine) Count() int {
 	return x.model.count()
 }
 
 // Save command stores model data to file system
-func (x *Stream) Save(fpath string) error {
+func (x *Engine) Save(fpath string) error {
 	data, err := json.Marshal(x.model)
 	if err != nil {
 		return errors.Wrap(err, "Json dump error")
@@ -52,7 +52,7 @@ func (x *Stream) Save(fpath string) error {
 }
 
 // DumpModel returns encoded model data
-func (x *Stream) DumpModel() []byte {
+func (x *Engine) DumpModel() []byte {
 	data, err := json.Marshal(x.model)
 	if err != nil { // be must encodable
 		panic(err)
@@ -62,7 +62,7 @@ func (x *Stream) DumpModel() []byte {
 }
 
 // Load command imports model data from file system
-func (x *Stream) Load(fpath string) error {
+func (x *Engine) Load(fpath string) error {
 	f, err := os.Open(fpath)
 	if err != nil {
 		return errors.Wrap(err, "Model file open error: "+fpath)
@@ -86,6 +86,6 @@ func (x *Stream) Load(fpath string) error {
 }
 
 // Formats returns list of Format structure from model.
-func (x *Stream) Formats() []*Format {
+func (x *Engine) Formats() []*Format {
 	return x.model.formats()
 }
