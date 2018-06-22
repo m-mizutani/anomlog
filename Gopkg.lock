@@ -8,12 +8,6 @@
   version = "v1.1.0"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/golang/glog"
-  packages = ["."]
-  revision = "23def4e6c14b4da8ac2ed8007337bc5eb5007998"
-
-[[projects]]
   name = "github.com/jessevdk/go-flags"
   packages = ["."]
   revision = "c6ca198ec95c841fdb89fc0de7496fed11ab854e"
@@ -40,6 +34,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "17c5f1c1e7a415561428e4cce2d8ae1bfb8c6020366700d76a06126746d710d6"
+  inputs-digest = "e77c59090116d669e77b8fd768248f782c86193d1b58c38b161417df29f4ef6b"
   solver-name = "gps-cdcl"
   solver-version = 1

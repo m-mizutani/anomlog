@@ -36,10 +36,7 @@ func (x *Engine) Count() int {
 
 // Save command stores model data to file system
 func (x *Engine) Save(fpath string) error {
-	data, err := json.Marshal(x.model)
-	if err != nil {
-		return errors.Wrap(err, "Json dump error")
-	}
+	data := x.DumpModel()
 
 	f, err := os.Create(fpath)
 	if err != nil {
@@ -53,7 +50,7 @@ func (x *Engine) Save(fpath string) error {
 
 // DumpModel returns encoded model data
 func (x *Engine) DumpModel() []byte {
-	data, err := json.Marshal(x.model)
+	data, err := x.model.dump()
 	if err != nil { // be must encodable
 		panic(err)
 	}
@@ -87,5 +84,5 @@ func (x *Engine) Load(fpath string) error {
 
 // Formats returns list of Format structure from model.
 func (x *Engine) Formats() []*Format {
-	return x.model.formats()
+	return []*Format{}
 }
